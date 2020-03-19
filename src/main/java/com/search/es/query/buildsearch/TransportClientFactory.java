@@ -23,7 +23,7 @@ public class TransportClientFactory {
     private static int transPort = 9300;
 
     static {
-        initEsClient(clusterName, indexServerStr, transPort);
+        initEsClient(clusterName, indexServerStgitr, transPort);
     }
 
     private static void initEsClient(String clusterName, String indexServerStr, int transPort) {
