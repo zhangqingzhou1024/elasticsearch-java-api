@@ -17,9 +17,10 @@ public class TransportClientFactory {
 
     private static volatile TransportClient esClient;
 
-    private static String clusterName = "";
-    private static String indexServerStr = "";
-    private static int transPort = 0;
+    // 优化成配置文件管理
+    private static String clusterName = "liziyuan-log-nodes";
+    private static String indexServerStr = "ipUrl";
+    private static int transPort = 9300;
 
     static {
         initEsClient(clusterName, indexServerStr, transPort);
