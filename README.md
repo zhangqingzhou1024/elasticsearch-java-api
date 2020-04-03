@@ -2,4 +2,4 @@
 jdk: 1.8
 elasticsearch: 5.4.1
 
-ping
+java TransportClient 实现

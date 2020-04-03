@@ -1,0 +1,187 @@
+<indexConfig>
+    <!-- 索引 配置 基础 -->
+
+    <indexName>liziyuan_hope_info</indexName>
+    <typeName>liziyuan_hope_ref</typeName>
+    <shardsNumber>16</shardsNumber>
+    <replicasNumber>1</replicasNumber>
+    <maxResultWindow>10000</maxResultWindow>
+    <refreshInterval>10s</refreshInterval>
+    <delHistoryIndex>true</delHistoryIndex>
+
+    <!-- mapping 设置 -->
+    <mappingJson>
+
+        <![CDATA[{
+		      "dynamic": "false",
+		      "_source": {
+		        "enabled": "true"
+		        
+		      },
+
+			  "properties": {
+			    "doc_id1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "content1": {
+			      "analyzer": "standard",
+			      "type": "text",
+			      "store": true
+			    },
+			    "source_number1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_number_country1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_number_province1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_number_city1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_send_province1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_send_city1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number_country1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number_province1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number_city1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_receive_province1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_receive_city1": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "send_time1": {
+			      "type": "date",
+			      "format": "yyyy-MM-dd HH:mm:ss",
+			      "store": true
+			    },
+			    "doc_id2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "content2": {
+			      "analyzer": "standard",
+			      "type": "text",
+			      "store": true
+			    },
+			    "source_number2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_number_country2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_number_province2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_number_city2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_send_province2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "source_send_city2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number_country2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number_province2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_number_city2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_receive_province2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "destination_receive_city2": {
+			      "type": "keyword",
+			      "index": "not_analyzed",
+			      "store": true
+			    },
+			    "send_time2": {
+			      "type": "date",
+			      "format": "yyyy-MM-dd HH:mm:ss",
+			      "store": true
+			    },
+			    "similarity": {
+			      "type": "double",
+			      "store": true
+			    },
+			    "update_time": {
+			      "type": "date",
+			      "format": "yyyy-MM-dd HH:mm:ss",
+			      "store": true
+			    }
+			  }
+					    
+		}]]>
+    </mappingJson>
+
+</indexConfig>

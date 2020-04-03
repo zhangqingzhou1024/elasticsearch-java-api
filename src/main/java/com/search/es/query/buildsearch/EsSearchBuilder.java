@@ -1,6 +1,7 @@
 package com.search.es.query.buildsearch;
 
 
+import com.search.es.TransportClientFactory;
 import com.search.es.query.common.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

@@ -1,5 +1,6 @@
-package com.search.es.query.buildsearch;
+package com.search.es;
 
+import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -12,20 +13,29 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * ES获取client 工具类
+ *
+ * @author zhangqingzhou
  */
+@Log4j2
 public class TransportClientFactory {
-
+    private static Object lock = new Object();
     private static volatile TransportClient esClient;
-
     // 优化成配置文件管理
     private static String clusterName = "liziyuan-log-nodes";
-    private static String indexServerStr = "ipUrl";
+    private static String indexServerStr = "IP";
     private static int transPort = 9300;
 
     static {
-        initEsClient(clusterName, indexServerStgitr, transPort);
+        initEsClient(clusterName, indexServerStr, transPort);
     }
 
+    /**
+     * 初始化
+     *
+     * @param clusterName    集群名称
+     * @param indexServerStr 索引地址
+     * @param transPort      端口
+     */
     private static void initEsClient(String clusterName, String indexServerStr, int transPort) {
         System.out.println("初始化 ES client...");
         try {
@@ -52,7 +62,9 @@ public class TransportClientFactory {
      */
     public static TransportClient getEsClient() {
         if (esClient == null) {
-            initEsClient(clusterName, indexServerStr, transPort);
+            synchronized (lock) {
+                initEsClient(clusterName, indexServerStr, transPort);
+            }
         }
         return esClient;
     }
