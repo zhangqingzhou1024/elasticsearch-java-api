@@ -165,8 +165,4 @@ public class AutoMapping {
         System.out.println("indices 删除结果为" + acknowledged);
     }
 
-    public static void main(String[] args) {
-        AutoMapping index = new AutoMapping();
-        index.createMapping();
-    }
 }
