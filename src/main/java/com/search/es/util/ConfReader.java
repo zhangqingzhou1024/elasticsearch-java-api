@@ -52,12 +52,4 @@ public class ConfReader {
         return ElasticClusterConf.builder().clusterHost(clusterHost).clusterName(clusterName).transPort(Integer.parseInt(transPort)).build();
     }
 
-
-    public static void main(String[] args) throws Exception {
-        ElasticClusterConf esClusterConfig = getESClusterConfig();
-        System.out.println(esClusterConfig);
-
-        String indexMappingPath = getIndexMappingPath();
-        System.out.println(indexMappingPath);
-    }
 }
