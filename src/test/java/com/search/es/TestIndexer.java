@@ -20,13 +20,14 @@ public class TestIndexer {
         IndexData indexData = new IndexData();
         indexData.setIndexName("liziyuan_hope_info");
         indexData.setTypeName("liziyuan_hope_ref");
-        indexData.setDataId("2");
+        indexData.setDataId("3");
 
 
         IndexBean indexBean = new IndexBean();
         indexBean.setContent1("我是zqz");
-        indexBean.setId("2");
+        indexBean.setId("3");
 
+        indexBean.setContent1("中国人你好，加油");
         indexData.setDataJson(JsonHelper.toJson(indexBean));
         List<IndexData> objects = new ArrayList<>();
         objects.add(indexData);

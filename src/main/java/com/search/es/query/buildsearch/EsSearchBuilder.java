@@ -3,6 +3,8 @@ package com.search.es.query.buildsearch;
 
 import com.search.es.TransportClientFactory;
 import com.search.es.query.common.*;
+import com.search.es.util.JsonHelper;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -29,8 +31,11 @@ import org.elasticsearch.search.aggregations.metrics.min.Min;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.sort.SortOrder;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -512,7 +517,7 @@ public class EsSearchBuilder {
      * @param field
      * @param phrase
      * @param queryType 相关文档
-     *                 http://www.blogjava.net/persister/archive/2009/07/14/286634.html
+     *                  http://www.blogjava.net/persister/archive/2009/07/14/286634.html
      */
     public void addPhraseQuery(String field, String phrase, QueryTypeEnum queryType) {
         if ((!(checkStr(field))) || (!(checkStr(phrase)))) {
@@ -534,7 +539,7 @@ public class EsSearchBuilder {
      * @param field
      * @param phrase
      * @param queryType 相关文档
-     *                 http://www.blogjava.net/persister/archive/2009/07/14/286634.html
+     *                  http://www.blogjava.net/persister/archive/2009/07/14/286634.html
      */
     public void addPhraseQuery(String field, String phrase, int slop, QueryTypeEnum queryType) {
         if ((!(checkStr(field))) || (!(checkStr(phrase)))) {
@@ -627,9 +632,9 @@ public class EsSearchBuilder {
      * 多字段 多值匹配
      * 只要满足一个字段即可
      *
-     * @param field      字段名
+     * @param fields     字段名
      * @param contextStr 要匹配的字符串
-     * @param operator   操作方式
+     * @param queryType  操作方式
      */
     public void addMultFieldsPhrasePrefixQuery(String[] fields, String contextStr, QueryTypeEnum queryType) {
         // 内容 匹配 查询 高亮
@@ -1048,9 +1053,9 @@ public class EsSearchBuilder {
                 TermsAggregationBuilder builder = AggregationBuilders.terms("agg_" + fields[i]).field(fields[i]).size(topN)
                         .minDocCount(minDocCounts[i]).shardMinDocCount(shardsMinDocCounts[i]);
                 // 排序
-                if (orderByCount)
+                if (orderByCount) {
                     builder = builder.order(Terms.Order.count(!(isDesc)));
-                else {
+                } else {
                     builder = builder.order(Terms.Order.term(!(isDesc)));
                 }
                 if (topBuilder == null) {
@@ -1170,7 +1175,8 @@ public class EsSearchBuilder {
      * 度量聚合
      * 与其它聚合方式 互斥  覆盖现象
      *
-     * @param aggList
+     * @param field  字段
+     * @param metric 度量聚合类型
      */
     public void addMetricAgg(String field, MetricEnum metric) {
         if (field == null || field.equals("")) {
@@ -1428,7 +1434,6 @@ public class EsSearchBuilder {
      *
      * @return
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public List<String[]> getResults() {
         List resultList = new ArrayList();
         if ((this.fields == null) || (this.fields.length == 0)) {
@@ -1472,6 +1477,64 @@ public class EsSearchBuilder {
                     resultList.add(data);
                 }
                 index++;
+            }
+        }
+
+        return resultList;
+    }
+
+    /**
+     * 从 search 返回的 结果中 组装 值
+     * 前提是 你建立mapping 的时候要设置 store:true
+     * 再由 fields 过滤取值
+     *
+     * @return 结果集
+     */
+    public <T> List<T> getResultList(Class<T> classType) {
+        List<T> resultList = new ArrayList<T>(this.rows);
+
+        // 字段类型
+
+        Field[] fieldArr = classType.getDeclaredFields();
+        if (ArrayUtils.isEmpty(this.fields) || ArrayUtils.isEmpty(fieldArr)) {
+            return resultList;
+        }
+        Set<String> fieldSet = Stream.of(fieldArr).map(Field::getName).collect(Collectors.toSet());
+
+        // 结果集
+        List<SearchResponse> responseBackList = this.responseList;
+        for (SearchResponse searchResponse : responseBackList) {
+            for (SearchHit hit : searchResponse.getHits()) {
+                Map<String, String> rowMap = new HashMap<>();
+                // 填充元数据
+                rowMap.put("indexName", hit.getIndex());
+                rowMap.put("typeName", hit.getType());
+                rowMap.put("docId", hit.getId());
+
+                for (String field : this.fields) {
+                    if (!fieldSet.contains(field)) {
+                        continue;
+                    }
+                    SearchHitField hitField = hit.getFields().get(field);
+                    if (null == hitField) {
+                        continue;
+                    }
+                    String value = hitField.getValue();
+
+                    // 非空判断
+                    if (StringUtils.isEmpty(value)) {
+                        continue;
+                    }
+                    rowMap.put(field, value);
+                }
+
+                // 类型转换
+                T toBean = JsonHelper.toBean(JsonHelper.toJson(rowMap), classType);
+                if (null == toBean) {
+                    continue;
+                }
+                // 返回字段容器
+                resultList.add(toBean);
             }
         }
 
@@ -1551,7 +1614,7 @@ public class EsSearchBuilder {
     /**
      * InternalCardinality 聚合方式
      *
-     * @param range
+     * @param cardinality
      * @return
      */
     private List<StatResult> getAggCardinalityResult(InternalCardinality cardinality) {
