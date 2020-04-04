@@ -13,5 +13,8 @@ public class TestMapping {
     public static void main(String[] args) {
         AutoMapping index = new AutoMapping();
         index.createMapping();
+
+
+
     }
 }

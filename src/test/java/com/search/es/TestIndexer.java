@@ -1,8 +1,7 @@
 package com.search.es;
 
 import com.search.es.bean.IndexBean;
-import com.search.es.indexer.indexer.IndexCreater;
-import com.search.es.indexer.indexer.IndexData;
+import com.search.es.bean.IndexData;
 import com.search.es.util.JsonHelper;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.List;
  */
 public class TestIndexer {
     public static void main(String[] args) throws Exception {
-        IndexCreater indexCreater = new IndexCreater();
+        IndexManager indexCreater = new IndexManager();
         IndexData indexData = new IndexData();
         indexData.setIndexName("liziyuan_hope_info");
         indexData.setTypeName("liziyuan_hope_ref");

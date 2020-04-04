@@ -1,4 +1,4 @@
-package com.search.es.indexer.indexer;
+package com.search.es.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,11 +13,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IndexData {
+    /**
+     * 索引名称
+     */
     private String indexName;
+    /**
+     * 类型名称
+     */
     private String typeName;
+    /**
+     * 数据
+     */
     private String dataJson;
     /**
-     * 更新索引时需指定！
+     * docId 更新索引时需指定！
      */
     private String dataId;
 

@@ -1,6 +1,5 @@
 <indexConfig>
     <!-- 索引 配置 基础 -->
-
     <indexName>liziyuan_hope_info</indexName>
     <typeName>liziyuan_hope_ref</typeName>
     <shardsNumber>16</shardsNumber>
